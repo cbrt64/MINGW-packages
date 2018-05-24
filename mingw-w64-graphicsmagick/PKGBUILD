@@ -4,7 +4,7 @@ _realname=graphicsmagick
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
 pkgver=1.3.31
-pkgrel=1
+pkgrel=2
 pkgdesc="An image viewing/manipulation program (mingw-w64)"
 arch=('any')
 url="http://www.graphicsmagick.org/"
@@ -90,6 +90,7 @@ build() {
     --with-jp2 \
     --with-webp \
     --with-jbig \
+    --with-quantum-depth=16 \
     --without-fpx \
     --without-dps \
     --without-perl \
