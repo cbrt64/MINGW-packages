@@ -6,7 +6,7 @@ pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
 #_qmake=${MINGW_PREFIX}/bin/qmake
 _qmake=${MINGW_PREFIX}/qt5-static/bin/qmake
 pkgver=r1108.46131e9
-pkgrel=1
+pkgrel=2
 pkgdesc="a powerful Pacman frontend using Qt libs"
 arch=('any')
 url="https://github.com/aarnt/octopi"
@@ -112,7 +112,7 @@ package() {
 
   install -D -m755 bin/${_gitname}                                            ${pkgdir}${MINGW_PREFIX}/bin/${_gitname}
   install -D -m755 notifier/bin/${_gitname}-notifier                          ${pkgdir}${MINGW_PREFIX}/bin/${_gitname}-notifier
-  install -D -m644 ${srcdir}/${_gitname}/resources/images/${_gitname}_red.png ${pkgdir}${MINGW_PREFIX}/share/icons/$}_gitname}.png
+  install -D -m644 ${srcdir}/${_gitname}/resources/images/${_gitname}_red.png ${pkgdir}${MINGW_PREFIX}/share/icons/${_gitname}.png
 
   #services
   install -D -m755 notifier/bin/pacmanhelper                                  ${pkgdir}${MINGW_PREFIX}/lib/octopi/pacmanhelper
