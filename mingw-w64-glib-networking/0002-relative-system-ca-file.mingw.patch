@@ -50,8 +50,9 @@
 +  if (!g_path_is_absolute (GTLS_SYSTEM_CA_FILE)
 +#ifdef G_OS_WIN32
 +      || strlen (GTLS_SYSTEM_CA_FILE) < 3
-+      || (GTLS_SYSTEM_CA_FILE)[1] != ':')
++      || (GTLS_SYSTEM_CA_FILE)[1] != ':'
 +#endif
++     )
 +    {
 +      gchar *root;
 +      gchar *anchor;
