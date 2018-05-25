@@ -14,13 +14,13 @@ depends=("${MINGW_PACKAGE_PREFIX}-gcc-libs")
 makedepends=("${MINGW_PACKAGE_PREFIX}-gcc")
 options=('strip' 'staticlibs')
 source=("https://sources.archlinux.org/other/packages/bzip2/bzip2-${pkgver}.tar.gz"
-        "bzip2-1.0.4-bzip2recover.patch"
-        "bzip2-1.0.5-slash.patch"
-        "bzgrep-debian-1.0.5-6.all.patch"
-        "bzip2-cygming-1.0.6.src.all.patch"
-        "bzip2-buildsystem.all.patch"
-        "bzip2-1.0.6-progress.all.patch"
-        "bzip2-1.0.6-fix-heap-use-after-free-bzip2recover.patch")
+        "001-bzip2-1.0.4-bzip2recover.patch"
+        "002-bzip2-1.0.5-slash.patch"
+        "003-bzgrep-debian-1.0.5-6.all.patch"
+        "004-bzip2-cygming-1.0.6.src.all.patch"
+        "005-bzip2-buildsystem.all.patch"
+        "006-bzip2-1.0.6-progress.all.patch"
+        "007-bzip2-1.0.6-fix-heap-use-after-free-bzip2recover.patch")
 sha256sums=('a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd'
             '0585fb92a4b409404147a3f940ed2ca03b3eaed1ec4fb68ae6ad74db668bea83'
             '672216b20cf29438ffe43ebf38b9a648d9a0ac6fdc6be55bb4181d57ed5462be'
@@ -40,13 +40,13 @@ prepare() {
   rm -rf bzip2.pc.in | true
   rm -rf Makefile.in | true
 
-  patch -p1 -i "${srcdir}"/bzip2-1.0.4-bzip2recover.patch
-  patch -p1 -i "${srcdir}"/bzip2-1.0.5-slash.patch
-  patch -p1 -i "${srcdir}"/bzgrep-debian-1.0.5-6.all.patch
-  patch -p1 -i "${srcdir}"/bzip2-cygming-1.0.6.src.all.patch
-  patch -p1 -i "${srcdir}"/bzip2-buildsystem.all.patch
-  patch -p1 -i "${srcdir}"/bzip2-1.0.6-progress.all.patch
-  patch -p1 -i "${srcdir}"/bzip2-1.0.6-fix-heap-use-after-free-bzip2recover.patch
+  patch -p1 -i "${srcdir}"/001-bzip2-1.0.4-bzip2recover.patch
+  patch -p1 -i "${srcdir}"/002-bzip2-1.0.5-slash.patch
+  patch -p1 -i "${srcdir}"/003-bzgrep-debian-1.0.5-6.all.patch
+  patch -p1 -i "${srcdir}"/004-bzip2-cygming-1.0.6.src.all.patch
+  patch -p1 -i "${srcdir}"/005-bzip2-buildsystem.all.patch
+  patch -p1 -i "${srcdir}"/006-bzip2-1.0.6-progress.all.patch
+  patch -p1 -i "${srcdir}"/007-bzip2-1.0.6-fix-heap-use-after-free-bzip2recover.patch
   autoreconf -fi
 }
 
