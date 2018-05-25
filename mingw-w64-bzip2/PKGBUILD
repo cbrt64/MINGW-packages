@@ -5,7 +5,7 @@ _realname=bzip2
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
 pkgver=1.0.6
-pkgrel=6
+pkgrel=7
 pkgdesc="A high-quality data compression program (mingw-w64)"
 arch=('any')
 url="http://www.bzip.org"
@@ -25,7 +25,7 @@ sha256sums=('a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd'
             '0585fb92a4b409404147a3f940ed2ca03b3eaed1ec4fb68ae6ad74db668bea83'
             '672216b20cf29438ffe43ebf38b9a648d9a0ac6fdc6be55bb4181d57ed5462be'
             'fe9212dcd0400d34269877b8de44b18767b9570048b85ed2a8d3c04e03940e9a'
-            '7e67f77172b19f3e6c1f0875b1d3e9cb79211f8e1c752794ef9afd3704f928cf'
+            '7a4f735e5600580a72bd538272b650262e4bdc38699c440f26286dc347fd9e93'
             'e519a50a4adaf05b18650d3e9d644badc66e80ca86063681ffe9a2c2226319d0'
             'f93e6b50082a8e880ee8436c7ec6a65a8f01e9282436af77f95bb259b1c7f7f7'
             '7b96cf49248ff3eb24f9e552861b91848f45526a2ce07219bef925e663afe313')
