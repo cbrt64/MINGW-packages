@@ -1,0 +1,20 @@
+diff -U3 bc-1.07.1.orig/bc/execute.c bc-1.07.1/bc/execute.c
+--- bc-1.07.1.orig/bc/execute.c	2019-01-09 19:52:24.860590800 -0600
++++ bc-1.07.1/bc/execute.c	2019-01-09 19:53:34.157173100 -0600
+@@ -293,7 +293,7 @@
+ 
+ 	case 'X': /* Random function. */
+ 	  push_copy (_zero_);
+-	  bc_int2num (&ex_stack->s_num, random());
++	  bc_int2num (&ex_stack->s_num, rand());
+ 	  break;
+ 	}
+ 	break;
+diff -U3 bc-1.07.1.orig/bc/fix-libmath_h bc-1.07.1/bc/fix-libmath_h
+--- bc-1.07.1.orig/bc/fix-libmath_h	2019-01-09 19:52:24.891837700 -0600
++++ bc-1.07.1/bc/fix-libmath_h	2019-01-09 19:53:12.251137000 -0600
+@@ -1,3 +1,4 @@
++dos2unix libmath.h
+ ed libmath.h <<EOS-EOS
+ 1,1s/^/{"/
+ 1,\$s/\$/",/

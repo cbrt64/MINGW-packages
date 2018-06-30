@@ -4,23 +4,30 @@
 _realname=bc
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}")
-pkgver=1.06
-pkgrel=2
+pkgver=1.07.1
+pkgrel=1
 pkgdesc='bc is an arbitrary precision numeric processing language (mingw-w64)'
 arch=('any')
 url='https://www.gnu.org/software/bc/'
 license=('GPL3')
 options=('strip' '!libtool' 'staticlibs')
-source=("https://ftp.gnu.org/gnu/${_realname}/${_realname}-${pkgver}.tar.gz")
-sha256sums=('4ef6d9f17c3c0d92d8798e35666175ecd3d8efac4009d6457b5c99cea72c0e33')
+source=("https://ftp.gnu.org/gnu/${_realname}/${_realname}-${pkgver}.tar.gz"
+        "001-fix-crlf-during-build.patch")
+sha256sums=('62adfca89b0a1c0164c2cdca59ca210c1d44c3ffc46daf9931cf4942664cb02a'
+            '46d903bbafd970ef7be4a341f7fd7637de3fb86e8508f49a651833cad09059f2')
 
 prepare() {
   cd $srcdir/${_realname}-${pkgver}
+
+  patch -p1 -i ${srcdir}/001-fix-crlf-during-build.patch
 }
 
 build() {
-  cd $srcdir/${_realname}-${pkgver}
-  ./configure --prefix=${MINGW_PREFIX} \
+  [[ -d "${srcdir}"/build-${MINGW_CHOST} ]] && rm -rf "${srcdir}"/build-${MINGW_CHOST}
+  mkdir -p "${srcdir}"/build-${MINGW_CHOST} && cd "${srcdir}"/build-${MINGW_CHOST}
+
+  ../${_realname}-${pkgver}/configure \
+    --prefix=${MINGW_PREFIX} \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST}
@@ -29,7 +36,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${_realname}-${pkgver}
+  cd "${srcdir}"/build-${MINGW_CHOST}
   make install DESTDIR="${pkgdir}"
 
   # Licenses
