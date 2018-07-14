@@ -1,0 +1,13 @@
+post_install() {
+#  /mingw32/bin/xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+  /mingw32/bin/update-mime-database /mingw32/share/mime &> /dev/null
+  /mingw32/bin/update-desktop-database -q
+}
+
+post_upgrade() {
+  post_install
+}
+
+post_remove() {
+  post_install
+}

@@ -1,4 +1,5 @@
 # (MSYS2) Maintainer: Ray Donnelly <mingw.android@gmail.com>
+# (MSYS2) Contributor: Edward E <develinthedetail@gmail.com>
 # (ArchLinux) Maintainer: Gustavo Alvarez <sl1pkn07@gmail.com>
 # (ArchLinux) Contributor: Bruno Pagani (a.k.a. ArchangeGabriel) <bruno.n.pagani at gmail dot com>
 
@@ -10,12 +11,12 @@ _basename=krita
 _realname=${_basename}-git
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
-pkgver=3.0.89.r39172.46b0002
+pkgver=4.3.0.r49208.b7872b8a4b
 pkgrel=1
-pkgdesc="A free digital painting application. Digital Painting, Creative Freedom!. (GIT Version) (mingw-w64)"
+pkgdesc="A free digital painting application. Digital Painting, Creative Freedom! (GIT Version) (mingw-w64)"
 arch=('any')
 url="https://www.krita.org/"
-license=('GPL2')
+license=('GPL3')
 depends=("${MINGW_PACKAGE_PREFIX}-fftw"
          "${MINGW_PACKAGE_PREFIX}-gsl"
          "${MINGW_PACKAGE_PREFIX}-LibRaw"
@@ -26,6 +27,20 @@ depends=("${MINGW_PACKAGE_PREFIX}-fftw"
          "${MINGW_PACKAGE_PREFIX}-poppler"
 #         "${MINGW_PACKAGE_PREFIX}-kio"
          "${MINGW_PACKAGE_PREFIX}-hicolor-icon-theme"
+         "${MINGW_PACKAGE_PREFIX}-libheif"
+         "${MINGW_PACKAGE_PREFIX}-desktop-file-utils"
+         "${MINGW_PACKAGE_PREFIX}-shared-mime-info"
+         "${MINGW_PACKAGE_PREFIX}-quazip"
+         "${MINGW_PACKAGE_PREFIX}-karchive-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kconfig-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kwidgetsaddons-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kcompletion-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kcoreaddons-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kguiaddons-qt5"
+         "${MINGW_PACKAGE_PREFIX}-ki18n-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kitemmodels-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kitemviews-qt5"
+         "${MINGW_PACKAGE_PREFIX}-kwindowsystem-qt5"
          )
 makedepends=("${MINGW_PACKAGE_PREFIX}-extra-cmake-modules"
              "git"
@@ -36,13 +51,13 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-extra-cmake-modules"
              )
 provides=("${MINGW_PACKAGE_PREFIX}-krita")
 conflicts=("${MINGW_PACKAGE_PREFIX}-krita")
-install=krita-git.install
+install=krita-git-${CARCH}.install
 source=('git+https://anongit.kde.org/krita.git')
 sha256sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}"/${_basename}
-  _ver="$(cat CMakeLists.txt | grep -m3 -e CALLIGRA_STABLE_VERSION_MAJOR -e CALLIGRA_STABLE_VERSION_MINOR -e CALLIGRA_VERSION_RELEASE | cut -d ')' -f1 | grep -o "[[:digit:]]*" | paste -sd'.')"
+  _ver="$(cat CMakeLists.txt | grep -m3 -e KRITA_STABLE_VERSION_MAJOR -e KRITA_STABLE_VERSION_MINOR -e KRITA_VERSION_RELEASE | cut -d ')' -f1 | grep -o "[[:digit:]]*" | paste -sd'.')"
   echo "${_ver}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
 
@@ -67,6 +82,7 @@ build() {
     extra_config+=("-DCMAKE_BUILD_TYPE=Debug")
   fi
 
+MSYS2_ARG_CONV_EXCL="-DCMAKE_INSTALL_PREFIX=;-DECM_MKSPECS_INSTALL_DIR;-DQt5_DIR=;-DECM_DIR=" \
   cmake ../${_basename} \
     -DCMAKE_INSTALL_PREFIX=${QT5_PREFIX} \
     -DLIB_INSTALL_DIR=lib \
