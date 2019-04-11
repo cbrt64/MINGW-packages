@@ -6,7 +6,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 _basever=2.10.12
 _prever=
 pkgver=${_basever}${_prever//-/}
-pkgrel=4
+pkgrel=5
 pkgdesc="GNU Image Manipulation Program (mingw-w64)"
 arch=('any')
 url="https://www.gimp.org/"
@@ -19,7 +19,6 @@ depends=("${MINGW_PACKAGE_PREFIX}-babl"
          "${MINGW_PACKAGE_PREFIX}-gexiv2"
          "${MINGW_PACKAGE_PREFIX}-ghostscript"
          "${MINGW_PACKAGE_PREFIX}-hicolor-icon-theme"
-         "${MINGW_PACKAGE_PREFIX}-jasper"
          "${MINGW_PACKAGE_PREFIX}-lcms2"
          "${MINGW_PACKAGE_PREFIX}-libexif"
          "${MINGW_PACKAGE_PREFIX}-libheif"
@@ -61,23 +60,15 @@ prepare() {
   patch -p1 -i ${srcdir}/0004-replace-pygtk-codegen.patch
   patch -p1 -i ${srcdir}/0005-fix-link-python-plugins.patch
 
-  rm -fr autom4te.cache
-  libtoolize -c
-  aclocal -I m4macros
-  automake -a -c
-  autoheader
-  autoconf
-
-  #autoreconf -fi -I m4macros
+  NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
   [[ -d build-${MINGW_CHOST} ]] && rm -rf build-${MINGW_CHOST}
-  cp -rf ${_realname}-${_basever}${_prever} build-${MINGW_CHOST}
-  cd build-${MINGW_CHOST}
+  mkdir -p build-${MINGW_CHOST} && cd build-${MINGW_CHOST}
 
   PYTHON=${MINGW_PREFIX}/bin/python2 \
-  ./configure \
+  ../${_realname}-${_basever}${_prever}/configure \
     --prefix=${MINGW_PREFIX} \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
