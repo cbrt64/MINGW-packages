@@ -1,42 +1,30 @@
-diff -aur ImageMagick-7.0.7-23/MagickCore/distribute-cache.c.orig ImageMagick-7.0.7-23/MagickCore/distribute-cache.c
---- ImageMagick-7.0.7-23/MagickCore/distribute-cache.c.orig	2018-02-24 21:32:34.666271100 -0500
-+++ ImageMagick-7.0.7-23/MagickCore/distribute-cache.c	2018-02-24 21:42:13.327124000 -0500
-@@ -51,6 +51,10 @@
- /*
-   Include declarations.
- */
-+#if defined(MAGICKCORE_WINDOWS_SUPPORT)
-+#include <winsock2.h>
-+#include <ws2tcpip.h>
-+#endif
- #include "MagickCore/studio.h"
- #include "MagickCore/cache.h"
- #include "MagickCore/cache-private.h"
 diff -aur ImageMagick-7.0.7-23/MagickCore/nt-base.h.orig ImageMagick-7.0.7-23/MagickCore/nt-base.h
 --- ImageMagick-7.0.7-23/MagickCore/nt-base.h.orig	2018-02-18 19:43:40.000000000 -0500
 +++ ImageMagick-7.0.7-23/MagickCore/nt-base.h	2018-02-24 21:28:10.703040900 -0500
-@@ -30,6 +30,8 @@ extern "C" {
+@@ -29,7 +29,9 @@ extern "C" {
+
  #define WIN32_LEAN_AND_MEAN
  #define VC_EXTRALEAN
++#ifndef _CRT_SECURE_NO_DEPRECATE
  #define _CRT_SECURE_NO_DEPRECATE  1
-+#include <winsock2.h>
-+#include <ws2tcpip.h>
++#endif
  #include <windows.h>
  #include <wchar.h>
  #include <winuser.h>
-@@ -95,7 +97,7 @@ extern "C" {
+@@ -95,8 +97,8 @@ extern "C" {
  #if !defined(closedir)
  #  define closedir(directory)  NTCloseDirectory(directory)
  #endif
 -#define MAGICKCORE_HAVE_ERF
-+//#define MAGICKCORE_HAVE_ERF
  #if defined(_VISUALC_) && (_MSC_VER < 1700)
++#  define MAGICKCORE_HAVE_ERF
  #  define erf(x)  NTErf(x)
  #endif
+ #if !defined(fdopen)
 diff -aur ImageMagick-7.0.1-3/MagickCore/nt-base.c.orig ImageMagick-7.0.1-3/MagickCore/nt-base.c > patch
 --- ImageMagick-7.0.4-1/MagickCore/nt-base.c.orig	2017-01-02 23:52:31.225966200 -0500
 +++ ImageMagick-7.0.4-1/MagickCore/nt-base.c	2017-01-03 00:06:00.213705700 -0500
-@@ -1794,12 +1794,16 @@
+@@ -1867,12 +1867,16 @@
    wchar_t
      file_specification[MagickPathExtent];
  
@@ -50,7 +38,83 @@ diff -aur ImageMagick-7.0.1-3/MagickCore/nt-base.c.orig ImageMagick-7.0.1-3/Magi
    if (length == 0)
      return((DIR *) NULL);
 -  if (wcsncat(file_specification,(const wchar_t*) DirectorySeparator,
-+  if(wcsncat(file_specification, WCDirectorySeparator,
++  if (wcsncat(file_specification, WCDirectorySeparator,
          MagickPathExtent-wcslen(file_specification)-1) == (wchar_t *) NULL)
      return((DIR *) NULL);
    entry=(DIR *) AcquireCriticalMemory(sizeof(DIR));
+diff -aur ImageMagick-7.0.8-60/coders/heic.c.orig ImageMagick-7.0.8-60/coders/heic.c
+--- ImageMagick-7.0.8-60/coders/heic.c.orig
++++ ImageMagick-7.0.8-60/coders/heic.c
+@@ -74,11 +74,11 @@
+ #include "MagickCore/module.h"
+ #include "MagickCore/utility.h"
+ #if defined(MAGICKCORE_HEIC_DELEGATE)
+-#if defined(MAGICKCORE_WINDOWS_SUPPORT)
+-#include <heif.h>
+-#else
+-#include <libheif/heif.h>
+-#endif
++#  if defined(MAGICKCORE_WINDOWS_SUPPORT) && !defined(__MINGW32__)
++#    include <heif.h>
++#  else
++#    include <libheif/heif.h>
++#  endif
+ #endif
+ 
+ #if defined(MAGICKCORE_HEIC_DELEGATE)
+diff -aur ImageMagick-7.0.8-60/configure.ac.orig ImageMagick-7.0.8-60/configure.ac
+--- ImageMagick-7.0.8-60/configure.ac.orig
++++ ImageMagick-7.0.8-60/configure.ac
+@@ -30,7 +30,7 @@ m4_define([magick_micro_version], [8])
+ m4_define([magick_patchlevel_version], [60])
+ m4_define([magick_version],
+           [magick_major_version.magick_minor_version.magick_micro_version-magick_patchlevel_version])
+-m4_define([magick_git_revision], esyscmd([sh -c "(gitversion.sh .) | awk '{ print \$1 }' | tr -d '\n'"]))
++m4_define([magick_git_revision], esyscmd([sh -c "(./gitversion.sh) | awk '{ print \$1 }' | tr -d '\n'"]))
+ m4_define([magick_tar_name],[ImageMagick])
+ 
+ # ==============================================================================
+@@ -243,6 +243,9 @@ AC_SUBST(MAN_DIR)
+ srcdirfull="`cd $srcdir && pwd`"
+ builddir="`pwd`"
+ 
++WinPathScript="${srcdirfull}/winpath.sh"
++AC_SUBST(WinPathScript)
++
+ #
+ # Compute variables useful for running uninstalled software.
+ #
+@@ -367,9 +370,6 @@ AM_CONDITIONAL(WIN32_NATIVE_BUILD, test "${native_win32_build}" = 'yes' )
+ AM_CONDITIONAL(CYGWIN_BUILD, test "${cygwin_build}" = 'yes' )
+ AM_CONDITIONAL(USING_CL, test "x${CC}" = 'xcl.exe' )
+ 
+-WinPathScript="${srcdirfull}/winpath.sh"
+-AC_SUBST(WinPathScript)
+-
+ #
+ # Compiler flags tweaks
+ #
+diff -aur ImageMagick-7.0.8-60/MagickCore/studio.h.orig ImageMagick-7.0.8-60/MagickCore/studio.h
+--- ImageMagick-7.0.8-60/MagickCore/studio.h.orig
++++ ImageMagick-7.0.8-60/MagickCore/studio.h
+@@ -123,12 +123,14 @@ extern "C" {
+ # include <pthread.h>
+ #endif
+ #if defined(MAGICKCORE_WINDOWS_SUPPORT)
+-#if !defined(__CYGWIN__)
+-#include <winsock2.h>
+-#include <ws2tcpip.h>
+-#endif
+-#include <windows.h>
+-#pragma comment (lib, "ws2_32.lib")
++# if !defined(__CYGWIN__)
++#  include <winsock2.h>
++#  include <ws2tcpip.h>
++# endif
++# include <windows.h>
++# if defined(_MSC_VER)
++#  pragma comment (lib, "ws2_32.lib")
++# endif
+ #endif
+ #if defined(MAGICKCORE_HAVE_SYS_SYSLIMITS_H)
+ # include <sys/syslimits.h>
