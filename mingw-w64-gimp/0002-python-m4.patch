@@ -1,6 +1,6 @@
---- gimp-2.8.10/configure.ac.orig	2014-02-25 22:03:04.931800000 +0400
-+++ gimp-2.8.10/configure.ac	2014-02-25 22:20:04.452800000 +0400
-@@ -1805,6 +1805,12 @@
+--- gimp-2.10.12/configure.ac.orig
++++ gimp-2.10.12/configure.ac
+@@ -2250,6 +2250,12 @@
    AM_PATH_PYTHON2(python2_required_version,,
                    [pycheck_error([Python 2 (python2_required_version or newer)], [it])])
    AM_CHECK_PYTHON_HEADERS(, [pycheck_error([Python 2 headers], [them])])
@@ -13,7 +13,7 @@
  
    # Win32 needs all symbols resolved for linking, even for DLLs
    # Assume the link library is in $exec_prefix/libs
-@@ -1812,11 +1818,8 @@
+@@ -2257,11 +2263,8 @@
    # not documented so we won't rely on internal implementation
    PYLINK_LIBS=
    if test "x$platform_win32" = "xyes"; then
@@ -27,9 +27,9 @@
    else
      PYBIN_PATH="$PYTHON"
    fi
---- gimp-2.8.10/m4macros/pythondev.m4.orig	2014-02-25 22:10:07.300400000 +0400
-+++ gimp-2.8.10/m4macros/pythondev.m4	2014-02-25 22:11:52.210400000 +0400
-@@ -14,11 +14,14 @@
+--- gimp-2.10.12/m4macros/pythondev.m4.orig
++++ gimp-2.10.12/m4macros/pythondev.m4
+@@ -226,11 +226,14 @@
    py_versiondir=
  fi
  dnl deduce PYTHON_INCLUDES
@@ -49,7 +49,7 @@
  fi
  AC_SUBST(PYTHON_INCLUDES)
  dnl check if the headers exist:
-@@ -31,3 +34,28 @@
+@@ -243,3 +246,28 @@
  $2])
  CPPFLAGS="$save_CPPFLAGS"
  ])

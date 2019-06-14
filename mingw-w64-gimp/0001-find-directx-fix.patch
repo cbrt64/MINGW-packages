@@ -1,6 +1,6 @@
---- gimp-2.8.10/configure.ac.orig	2014-01-25 17:15:34.153800000 +0400
-+++ gimp-2.8.10/configure.ac	2014-01-25 17:15:47.398200000 +0400
-@@ -1660,8 +1660,8 @@
+--- gimp-2.10.12/configure.ac.orig
++++ gimp-2.10.12/configure.ac
+@@ -2124,8 +2124,8 @@
    dinput_save_CPPFLAGS="$CPPFLAGS"
    dinput_save_LDFLAGS="$LDFLAGS"
    if test "x$with_directx_sdk" != x; then
