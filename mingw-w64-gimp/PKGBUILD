@@ -3,9 +3,7 @@
 _realname=gimp
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}")
-_basever=2.10.12
-_prever=
-pkgver=${_basever}${_prever//-/}
+pkgver=2.10.12
 pkgrel=5
 pkgdesc="GNU Image Manipulation Program (mingw-w64)"
 arch=('any')
@@ -39,7 +37,7 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-gcc"
              "intltool")
 options=('strip' 'makeflags')
 install=gimp-${CARCH}.install
-source=(https://download.gimp.org/pub/gimp/v${_basever%.*}/${_realname}-${_basever}${_prever}.tar.bz2
+source=(https://download.gimp.org/pub/gimp/v${pkgver%.*}/${_realname}-${pkgver}.tar.bz2
         0001-find-directx-fix.patch
         0002-python-m4.patch
         0003-mingw-add-ModuleFileName-dir-to-PATH.patch
@@ -53,7 +51,7 @@ sha256sums=('7d80b58e0784120d57d327294f6a1fda281ff51a61935c2cd764da281acaac71'
             '01651bb582b2120aae67752f6a28c0750ea690d46259d855e28f8b18da567bf5')
 
 prepare() {
-  cd "${srcdir}/${_realname}-${_basever}${_prever}"
+  cd "${srcdir}/${_realname}-${pkgver}"
   patch -p1 -i ${srcdir}/0001-find-directx-fix.patch
   patch -p1 -i ${srcdir}/0002-python-m4.patch
   patch -p1 -i ${srcdir}/0003-mingw-add-ModuleFileName-dir-to-PATH.patch
@@ -68,7 +66,7 @@ build() {
   mkdir -p build-${MINGW_CHOST} && cd build-${MINGW_CHOST}
 
   PYTHON=${MINGW_PREFIX}/bin/python2 \
-  ../${_realname}-${_basever}${_prever}/configure \
+  ../${_realname}-${pkgver}/configure \
     --prefix=${MINGW_PREFIX} \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
