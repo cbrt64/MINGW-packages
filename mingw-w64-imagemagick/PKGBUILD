@@ -4,7 +4,7 @@ _realname=imagemagick
 pkgbase="mingw-w64-${_realname}"
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
 _basever=7.0.8
-_rc=-53
+_rc=-60
 pkgver=${_basever}${_rc//-/.}
 pkgrel=1
 pkgdesc="An image viewing/manipulation program (mingw-w64)"
@@ -61,8 +61,8 @@ options=('staticlibs' 'strip' '!debug' 'libtool')
 source=(#https://www.imagemagick.org/download/ImageMagick-${pkgver%.*}-${pkgver##*.}.tar.xz{,.asc}
         https://www.imagemagick.org/download/ImageMagick-${_basever}${_rc}.tar.xz{,.asc}
         001-7.0.4.1-relocate.patch
-        002-7.0.4.1-build-fixes.patch)
-sha256sums=('6b4ec4ebc1a164493150dfffda258f0c4fdc092fdb354f9b3a8a13c2dae2c91f'
+        002-7.0.8.60-build-fixes-for-upstream.patch)
+sha256sums=('d2dbd0f95a5622eaab877968a7cc8363ffda59fe0f507d99e775bdb68964819c'
             'SKIP'
             '4fceb9cc6f5e54ac574ed64d21d95eecf769d16391cf07f9d36e94c8cedcf503'
             '3b3980b016fc0da3d402a85f77de29e4820780a93dec29a6063866f4f71e5c71')
@@ -95,7 +95,7 @@ prepare() {
     MagickCore/pathtools.h
   apply_patch_with_msg \
     001-7.0.4.1-relocate.patch \
-    002-7.0.4.1-build-fixes.patch
+    002-7.0.8.60-build-fixes-for-upstream.patch
 
   autoreconf -fi
 }
