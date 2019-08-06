@@ -1,0 +1,25 @@
+--- krita-4.2.5/libs/image/kis_painter.cc.orig
++++ krita-4.2.5/libs/image/kis_painter.cc
+@@ -2751,9 +2751,9 @@
+     d->conversionFlags = conversionFlags;
+ }
+ 
+-void KisPainter::setRunnableStrokeJobsInterface(KisRunnableStrokeJobsInterface *interface)
++void KisPainter::setRunnableStrokeJobsInterface(KisRunnableStrokeJobsInterface *iface)
+ {
+-    d->runnableStrokeJobsInterface = interface;
++    d->runnableStrokeJobsInterface = iface;
+ }
+ 
+ KisRunnableStrokeJobsInterface *KisPainter::runnableStrokeJobsInterface() const
+--- krita-4.2.5/libs/image/kis_painter.h.orig
++++ krita-4.2.5/libs/image/kis_painter.h
+@@ -842,7 +842,7 @@
+      *       of the caller to ensure that the interface object is alive during the lifetime
+      *       of the painter.
+      */
+-    void setRunnableStrokeJobsInterface(KisRunnableStrokeJobsInterface *interface);
++    void setRunnableStrokeJobsInterface(KisRunnableStrokeJobsInterface *iface);
+ 
+     /**
+      * Get the interface for running asynchronous jobs. It is used by paintops mostly.
